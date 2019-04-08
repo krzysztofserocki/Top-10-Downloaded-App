@@ -1,14 +1,15 @@
 package com.leicer.top10apps;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -18,6 +19,9 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private ListView listApps;
+
+    ArrayAdapter<FeedEntry> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,21 +30,29 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
 
+        listApps = findViewById(R.id.xmlListView);
+
         Log.d(TAG, "onCreate: starting AsyncTask");
         DownloadData downloadData = new DownloadData();
         downloadData.execute("http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topfreeapplications/limit=10/xml");
         Log.d(TAG, "onCreate: done");
     }
 
-    private class DownloadData extends AsyncTask<String, Void, String>  {
+    private class DownloadData extends AsyncTask<String, Void, String> {
         private static final String TAG = "DownloadData";
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.d(TAG, "onPostExecute: parameter is " + s);
+
             ParseApplication parseApplication = new ParseApplication();
             parseApplication.parse(s);
+
+            arrayAdapter = new ArrayAdapter<FeedEntry>(MainActivity.this,
+                    R.layout.list_item, parseApplication.getApplications());
+            listApps.setAdapter(arrayAdapter);
+
         }
 
         @Override
@@ -65,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
                 int charsRead;
                 char[] inputBuffer = new char[500];
-                while(true) {
+                while (true) {
                     charsRead = reader.read(inputBuffer);
                     if (charsRead < 0) {
                         break;
