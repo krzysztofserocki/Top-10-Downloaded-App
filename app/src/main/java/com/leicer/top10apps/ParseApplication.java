@@ -23,7 +23,7 @@ public class ParseApplication {
 
     public boolean parse(String xmlData) {
         boolean status = true;
-        FeedEntry currentRecord = new FeedEntry();
+        FeedEntry currentRecord = null;
         boolean inEntry = false;
         String textValue = "";
 
@@ -55,24 +55,28 @@ public class ParseApplication {
                             if ("entry".equalsIgnoreCase(tagName)) {
                                 applications.add(currentRecord);
                                 inEntry = false;
-                            } else if ("name".equalsIgnoreCase(tagName)) {
+                            } else if ("im:name".equalsIgnoreCase(tagName)) {
                                 currentRecord.setName(textValue);
-                            } else if ("artist".equalsIgnoreCase(tagName)) {
+                            } else if ("im:artist".equalsIgnoreCase(tagName)) {
                                 currentRecord.setArtist(textValue);
-                            } else if ("releaseDate".equalsIgnoreCase(tagName)) {
+                            } else if ("im:releaseDate".equalsIgnoreCase(tagName)) {
                                 currentRecord.setReleaseDate(textValue);
-                            } else if ("summary".equalsIgnoreCase(tagName)) {
+                            } else if ("im:summary".equalsIgnoreCase(tagName)) {
                                 currentRecord.setSummary(textValue);
-                            } else if ("image".equalsIgnoreCase(tagName)) {
+                            } else if ("im:image".equalsIgnoreCase(tagName)) {
                                 currentRecord.setImageurl(textValue);
                             }
                         }
                         break;
                         default:
-                            //Nothing else to do...
+                            // Nothing else to do..!
                 }
                 eventType = xpp.next();
+            }
 
+            for (FeedEntry app: applications) {
+                Log.d(TAG, "*****************");
+                Log.d(TAG, app.toString());
             }
         } catch (Exception e) {
             status = false;
