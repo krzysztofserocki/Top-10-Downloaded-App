@@ -23,14 +23,14 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/holo_red_dark">
+            android:background="#eaeaea">
 
             <TextView
+                android:id="@+id/fffff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Top 10 Downloaded Applications"
                 android:textAppearance="@style/TextAppearance.AppCompat"
-                android:textColor="@android:color/background_light"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
