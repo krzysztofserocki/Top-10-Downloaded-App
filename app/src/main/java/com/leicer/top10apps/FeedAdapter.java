@@ -14,13 +14,13 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
-public class FeedAdapter extends ArrayAdapter {
+public class FeedAdapter<T extends FeedEntry> extends ArrayAdapter {
     private static final String TAG = "FeedAdapter";
     private final int layoutResource;
     private final LayoutInflater layoutInflater;
-    private List<FeedEntry> applications;
+    private List<T> applications;
 
-    public FeedAdapter(@NonNull Context context, int resource, List<FeedEntry> applications) {
+    public FeedAdapter(@NonNull Context context, int resource, List<T> applications) {
         super(context, resource);
         this.layoutResource = resource;
         this.layoutInflater = LayoutInflater.from(context);
@@ -46,11 +46,6 @@ public class FeedAdapter extends ArrayAdapter {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
-//        TextView txtName = convertView.findViewById(R.id.txtName);
-//        TextView txtArtist = convertView.findViewById(R.id.txtArtist);
-//        TextView txtSummary = convertView.findViewById(R.id.txtSummary);
-//        TextView txtNumber = convertView.findViewById(R.id.txtNumber);
 
         FeedEntry currentApp = applications.get(position);
 
